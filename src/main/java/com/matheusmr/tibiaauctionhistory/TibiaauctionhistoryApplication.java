@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class TibiaauctionhistoryApplication {
+public class TibiaAuctionHistoryApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(TibiaauctionhistoryApplication.class, args);
+		SpringApplication.run(TibiaAuctionHistoryApplication.class, args);
 	}
 
 }
