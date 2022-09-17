@@ -44,19 +44,20 @@ public class NewAuctionsFetcherServiceImpl implements NewAuctionsFetcherService 
             final Integer auctionId = auctionsIdsToFetch.get(i);
             try {
                 Thread.sleep(5 * 1000);
-                log.info("Fetching auction {} of {}. Auction id: {}", i, auctionsIdsToFetch, auctionId);
+                log.info("Fetching auction {} of {}. Auction id: {}", i, auctionsIdsToFetchSize, auctionId);
                 auctionFetchService.fetchAuction(auctionId);
                 log.info("Successfully fetched auction of id {}", auctionId);
             } catch (Exception e) {
                 if (e instanceof HttpStatusException && ((HttpStatusException) e).getStatusCode() == HttpStatus.FORBIDDEN.value()){
-                    log.info("Blocked by rate limiter while fetching the auction {}", auctionId);
+                    final int secondsToWaitForRateLimiter = 60;
+                    log.info("Blocked by rate limiter while fetching the auction {}, waiting {} seconds to continue", auctionId, secondsToWaitForRateLimiter);
                     try {
-                        Thread.sleep(60 * 1000);
+                        Thread.sleep(secondsToWaitForRateLimiter * 1000);
                     } catch (InterruptedException ex) {
                         log.error("Thread interrupted while waiting for rate limit to expire, proceeding to next auction");
                     }
                 } else {
-                    log.error("Unexpected error while fetching the auction of id {}", auctionId, e);
+                    log.error("Unexpected error while fetching the auction of id {}, proceeding to next auction", auctionId, e);
                 }
             }
         }
@@ -74,7 +75,7 @@ public class NewAuctionsFetcherServiceImpl implements NewAuctionsFetcherService 
             final int latestFinishedAuctionId = Integer.parseInt(matcher.group(1));
             log.info("Found {} as the latest finished auction id", latestFinishedAuctionId);
 
-            final Set<Integer> allAuctionsIds = IntStream.range(0, latestFinishedAuctionId).boxed().collect(Collectors.toSet());
+            final Set<Integer> allAuctionsIds = IntStream.range(1, latestFinishedAuctionId).boxed().collect(Collectors.toSet());
             final Set<Integer> processedAuctionsIds = auctionRepository.findAll().stream().map(Auction::getId).collect(Collectors.toSet());
             allAuctionsIds.removeAll(processedAuctionsIds);
             log.info("{} auction already fetched, {} to fetch", processedAuctionsIds.size(), allAuctionsIds.size());

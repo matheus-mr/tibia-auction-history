@@ -73,7 +73,7 @@ public class AuctionFetchServiceImpl implements AuctionFetchService {
 
         final Elements internalErrorElements = document.select(":containsOwn(An internal error has occurred)");
         if (!internalErrorElements.isEmpty()){
-            return Auction.builder().id(auctionId).isInErrorState(true).build();
+            return auctionRepository.save(Auction.builder().id(auctionId).isInErrorState(true).build());
         }
 
         final Elements auctionHeaderElements = document.select(".AuctionHeader");
