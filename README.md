@@ -89,7 +89,7 @@ of the search.
 
 Usage examples:
 
-`GET /auctions/search/993d2c76-cd05-447f-9ae0-3e1fb1965da5` would return the criteria object used to create this search.
+`GET /api/v1/auctions/search/993d2c76-cd05-447f-9ae0-3e1fb1965da5` would return the criteria object used to create this search.
 ```
 {
     "field": "level",
@@ -132,6 +132,13 @@ For pagination and sorting use the following query params:
 | offset      | an non negative integer                          | 0             | if offset is greater than the result set size then an empty array is returned |
 | sortBy      | one of: name, level, vocation, world, auctionEnd | auctionEnd    |                                                                               |
 | orderBy     | one of: asc, desc                                | desc          |                                                                               |
+
+### Limits
+Logical operators, i.e. "and" and "or", must have at most 30 criterias.
+
+Comparison operators, i.e. all operators besides logical ones, must have at most 50 values.
+
+Also the maximum amount of recursion depth for the criteria object is 10.
 
 ## Running the project
 In the `./data` folder I've included the first 1.000.000 auctions scrapped data which will be loaded to 

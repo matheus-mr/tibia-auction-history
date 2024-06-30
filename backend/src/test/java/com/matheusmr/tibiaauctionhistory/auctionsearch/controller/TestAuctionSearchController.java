@@ -2,6 +2,7 @@ package com.matheusmr.tibiaauctionhistory.auctionsearch.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.matheusmr.tibiaauctionhistory.AbstractIntegrationTests;
+import com.matheusmr.tibiaauctionhistory.auctionsearch.deserializer.AuctionSearchCriterionDeserializer;
 import com.matheusmr.tibiaauctionhistory.auctionsearch.model.AuctionSearch;
 import com.matheusmr.tibiaauctionhistory.auctionsearch.model.AuctionSearchCriterion;
 import com.matheusmr.tibiaauctionhistory.auctionsearch.model.Operator;
@@ -44,6 +45,31 @@ public class TestAuctionSearchController extends AbstractIntegrationTests {
         assertEquals(auctionSearchIdResult, auctionSearchResult.getId());
         assertEquals(auctionSearchCriterion, auctionSearchResult.getCriteria());
         assertNull(auctionSearchResult.getLastUsageAt());
+    }
+
+    @Test
+    public void testCreateAuctionSearchExceedingMaxRecursionDepth() throws Exception {
+        final AuctionSearchCriterion nameCriterion = new AuctionSearchCriterion(
+                "name", Operator.EQUALS, List.of("foo"), null
+        );
+        final AuctionSearchCriterion baseAndCriterion = new AuctionSearchCriterion(
+                null, Operator.AND, null, List.of(nameCriterion)
+        );
+        final AuctionSearchCriterion criterionExceedingMaxRecursionDepth = createRecursiveCriterion(
+                baseAndCriterion,
+                AuctionSearchCriterionDeserializer.MAX_RECURSION_DEPTH + 1
+        );
+
+        final String response = mockMvc.perform(
+                        post("/api/v1/auctions/search")
+                                .content(objectMapper.writeValueAsString(criterionExceedingMaxRecursionDepth))
+                )
+                .andExpect(status().isBadRequest())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        assertEquals(AuctionSearchCriterionDeserializer.MAX_RECURSION_DEPTH_EXCEEDED_MSG, response);
     }
 
     @Test
@@ -143,21 +169,21 @@ public class TestAuctionSearchController extends AbstractIntegrationTests {
     @Test
     public void testFetchAuctionSearchResultsWithOffset() throws Exception {
         final List<AuctionDTO> auctions = searchAuctions(
-                KNIGHT_AUCTIONS_SEARCH_ID, "1", null, null, null
+                KNIGHT_AUCTIONS_SEARCH_ID, "1", null, "name", null
         );
 
         assertEquals(1, auctions.size());
-        assertEquals(33, auctions.getFirst().getId());
+        assertEquals(33, auctions.getFirst().id());
     }
 
     @Test
     public void testFetchAuctionSearchResultsWithLimit() throws Exception {
         final List<AuctionDTO> auctions = searchAuctions(
-                KNIGHT_AUCTIONS_SEARCH_ID, null, "1", null, null
+                KNIGHT_AUCTIONS_SEARCH_ID, null, "1", "name", null
         );
 
         assertEquals(1, auctions.size());
-        assertEquals(36, auctions.getFirst().getId());
+        assertEquals(36, auctions.getFirst().id());
     }
 
     @Test
@@ -189,7 +215,7 @@ public class TestAuctionSearchController extends AbstractIntegrationTests {
         );
 
         assertEquals(1, auctions.size());
-        assertEquals(23, auctions.getFirst().getId());
+        assertEquals(23, auctions.getFirst().id());
     }
 
     @Test
@@ -221,9 +247,9 @@ public class TestAuctionSearchController extends AbstractIntegrationTests {
         );
 
         assertEquals(3, auctions.size());
-        assertEquals(23, auctions.get(0).getId());
-        assertEquals(33, auctions.get(1).getId());
-        assertEquals(36, auctions.get(2).getId());
+        assertEquals(36, auctions.get(0).id());
+        assertEquals(33, auctions.get(1).id());
+        assertEquals(23, auctions.get(2).id());
     }
 
     @Test
@@ -249,7 +275,7 @@ public class TestAuctionSearchController extends AbstractIntegrationTests {
         );
 
         assertEquals(1, auctions.size());
-        assertEquals(36, auctions.getFirst().getId());
+        assertEquals(36, auctions.getFirst().id());
     }
 
     @Test
@@ -268,7 +294,7 @@ public class TestAuctionSearchController extends AbstractIntegrationTests {
         );
 
         assertEquals(1, auctions.size());
-        assertEquals(23, auctions.getFirst().getId());
+        assertEquals(23, auctions.getFirst().id());
     }
 
     @Test
@@ -287,8 +313,8 @@ public class TestAuctionSearchController extends AbstractIntegrationTests {
         );
 
         assertEquals(2, auctions.size());
-        assertEquals(33, auctions.get(0).getId());
-        assertEquals(36, auctions.get(1).getId());
+        assertEquals(36, auctions.get(0).id());
+        assertEquals(33, auctions.get(1).id());
     }
 
     @Test
@@ -307,8 +333,8 @@ public class TestAuctionSearchController extends AbstractIntegrationTests {
         );
 
         assertEquals(2, auctions.size());
-        assertEquals(33, auctions.get(0).getId());
-        assertEquals(36, auctions.get(1).getId());
+        assertEquals(36, auctions.get(0).id());
+        assertEquals(33, auctions.get(1).id());
     }
 
     @Test
@@ -327,8 +353,8 @@ public class TestAuctionSearchController extends AbstractIntegrationTests {
         );
 
         assertEquals(2, auctions.size());
-        assertEquals(33, auctions.get(0).getId());
-        assertEquals(36, auctions.get(1).getId());
+        assertEquals(36, auctions.get(0).id());
+        assertEquals(33, auctions.get(1).id());
     }
 
     @Test
@@ -347,7 +373,7 @@ public class TestAuctionSearchController extends AbstractIntegrationTests {
         );
 
         assertEquals(1, auctions.size());
-        assertEquals(23, auctions.getFirst().getId());
+        assertEquals(23, auctions.getFirst().id());
     }
 
     @Test
@@ -366,8 +392,8 @@ public class TestAuctionSearchController extends AbstractIntegrationTests {
         );
 
         assertEquals(2, auctions.size());
-        assertEquals(23, auctions.get(0).getId());
-        assertEquals(36, auctions.get(1).getId());
+        assertEquals(36, auctions.get(0).id());
+        assertEquals(23, auctions.get(1).id());
     }
 
     @Test
@@ -386,9 +412,9 @@ public class TestAuctionSearchController extends AbstractIntegrationTests {
         );
 
         assertEquals(3, auctions.size());
-        assertEquals(23, auctions.get(0).getId());
-        assertEquals(33, auctions.get(1).getId());
-        assertEquals(36, auctions.get(2).getId());
+        assertEquals(36, auctions.get(0).id());
+        assertEquals(33, auctions.get(1).id());
+        assertEquals(23, auctions.get(2).id());
     }
 
     @Test
@@ -407,8 +433,8 @@ public class TestAuctionSearchController extends AbstractIntegrationTests {
         );
 
         assertEquals(2, auctions.size());
-        assertEquals(23, auctions.get(0).getId());
-        assertEquals(36, auctions.get(1).getId());
+        assertEquals(36, auctions.get(0).id());
+        assertEquals(23, auctions.get(1).id());
     }
 
     @Test
@@ -427,8 +453,18 @@ public class TestAuctionSearchController extends AbstractIntegrationTests {
         );
 
         assertEquals(2, auctions.size());
-        assertEquals(23, auctions.get(0).getId());
-        assertEquals(36, auctions.get(1).getId());
+        assertEquals(36, auctions.get(0).id());
+        assertEquals(23, auctions.get(1).id());
+    }
+
+    private AuctionSearchCriterion createRecursiveCriterion(AuctionSearchCriterion criterion, int depth){
+        if (depth == 0){
+            return new AuctionSearchCriterion(
+                    "name", Operator.EQUALS, List.of("foo"), null
+            );
+        }
+
+        return criterion.withCriterias(List.of(createRecursiveCriterion(criterion, depth - 1)));
     }
 
     private UUID createAuctionSearch(AuctionSearchCriterion auctionSearchCriterion) throws Exception {

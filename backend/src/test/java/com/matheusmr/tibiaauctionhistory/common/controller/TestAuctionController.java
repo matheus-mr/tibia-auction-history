@@ -26,9 +26,9 @@ public class TestAuctionController extends AbstractIntegrationTests {
         final List<AuctionDTO> auctions = objectMapper.readValue(response, new TypeReference<>() {});
 
         assertEquals(3, auctions.size());
-        assertEquals(23, auctions.get(0).getId());
-        assertEquals(33, auctions.get(1).getId());
-        assertEquals(36, auctions.get(2).getId());
+        assertEquals(36, auctions.get(0).id());
+        assertEquals(33, auctions.get(1).id());
+        assertEquals(23, auctions.get(2).id());
     }
 
     @Test
@@ -42,10 +42,10 @@ public class TestAuctionController extends AbstractIntegrationTests {
         final AuctionDomainDTO auctionDomainDTO = objectMapper.readValue(response, new TypeReference<>() {});
 
         assertEquals(4, auctionDomainDTO.getVocations().size());
-        assertEquals(Vocation.KNIGHT.getName(), auctionDomainDTO.getVocations().get(0));
-        assertEquals(Vocation.PALADIN.getName(), auctionDomainDTO.getVocations().get(1));
-        assertEquals(Vocation.SORCERER.getName(), auctionDomainDTO.getVocations().get(2));
-        assertEquals(Vocation.DRUID.getName(), auctionDomainDTO.getVocations().get(3));
+        assertEquals(Vocation.KNIGHT.name(), auctionDomainDTO.getVocations().get(0));
+        assertEquals(Vocation.PALADIN.name(), auctionDomainDTO.getVocations().get(1));
+        assertEquals(Vocation.SORCERER.name(), auctionDomainDTO.getVocations().get(2));
+        assertEquals(Vocation.DRUID.name(), auctionDomainDTO.getVocations().get(3));
 
         assertEquals(2, auctionDomainDTO.getWorlds().size());
         assertEquals("Damora", auctionDomainDTO.getWorlds().get(0));

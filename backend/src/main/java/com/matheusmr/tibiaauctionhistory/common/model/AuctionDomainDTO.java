@@ -1,13 +1,13 @@
 package com.matheusmr.tibiaauctionhistory.common.model;
 
 import lombok.AccessLevel;
-import lombok.Data;
+import lombok.Value;
 import lombok.With;
 import lombok.experimental.FieldDefaults;
 
 import java.util.List;
 
-@Data
+@Value
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AuctionDomainDTO {
 

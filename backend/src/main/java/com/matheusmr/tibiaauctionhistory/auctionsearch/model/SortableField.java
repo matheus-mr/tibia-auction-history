@@ -12,6 +12,7 @@ public enum SortableField {
     LEVEL("level"),
     VOCATION("vocation"),
     WORLD("world"),
+    WINNING_BID("winningBid"),
     AUCTION_END("auctionEnd"),
     ;
 

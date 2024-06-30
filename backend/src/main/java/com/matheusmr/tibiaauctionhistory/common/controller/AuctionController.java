@@ -29,7 +29,7 @@ public class AuctionController {
 
     @GetMapping
     public ResponseEntity<List<AuctionDTO>> getAuctions(
-            @RequestParam(required = false, defaultValue = "1000") int limit,
+            @RequestParam(required = false, defaultValue = "100") int limit,
             @RequestParam(required = false, defaultValue = "0") int offset,
             @RequestParam(required = false, defaultValue = "AUCTION_END") SortableField sortBy,
             @RequestParam(required = false, defaultValue = "DESC") Sort.Direction orderBy

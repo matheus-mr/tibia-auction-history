@@ -74,14 +74,14 @@ public class AbstractIntegrationTests {
     }
 
     private void insertAuctionInErrorState(){
-        auctionRepository.save(Auction.builder().id(1).isInErrorState(true).build());
+        auctionRepository.save(Auction.builder().id(1).inErrorState(true).build());
     }
 
     private void insertAuctionNotSold(){
         auctionRepository.save(
                 Auction.builder()
                         .id(4)
-                        .isInErrorState(false)
+                        .inErrorState(false)
                         .name("Angus Tanker")
                         .level(561)
                         .vocation(Vocation.KNIGHT)
@@ -283,7 +283,7 @@ public class AbstractIntegrationTests {
         auctionRepository.save(
                 Auction.builder()
                         .id(33)
-                        .isInErrorState(false)
+                        .inErrorState(false)
                         .name("Dead Stalker")
                         .level(378)
                         .vocation(Vocation.KNIGHT)
@@ -421,7 +421,7 @@ public class AbstractIntegrationTests {
         auctionRepository.save(
                 Auction.builder()
                         .id(36)
-                        .isInErrorState(false)
+                        .inErrorState(false)
                         .name("Liperaah")
                         .level(309)
                         .vocation(Vocation.KNIGHT)
@@ -521,7 +521,7 @@ public class AbstractIntegrationTests {
         auctionRepository.save(
                 Auction.builder()
                         .id(23)
-                        .isInErrorState(false)
+                        .inErrorState(false)
                         .name("Aj Dzi")
                         .level(110)
                         .vocation(Vocation.SORCERER)

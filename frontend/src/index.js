@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 import {
   createBrowserRouter,
@@ -8,65 +8,70 @@ import {
 } from "react-router-dom";
 import axios from "axios";
 import useSWRImmutable from "swr/immutable";
-import App from "./App";
+import { buildFilters } from "./filters/auction-search-to-filters";
+import { getSearchParamOrDefault } from "./utils/react-router-utils";
+import App from "./components/App";
 
 import "./index.css";
-import { buildFilters } from "./filters/auction-search-to-filters";
-import { getDefaultFilters } from "./filters/default-filters";
+import { AppStateProvider, useAppState } from "./components/AppStateContext";
 
-const getParamOrDefault = (paramName, defaultValue) => (params) =>
-  params.has(paramName) ? params.get(paramName) : defaultValue;
-const getParamLimit = getParamOrDefault("limit", 10);
-const getParamOffset = getParamOrDefault("offset", 0);
-const getParamSortBy = getParamOrDefault("sortBy", "auctionEnd");
-const getParamOrderBy = getParamOrDefault("orderBy", "DESC");
+const getParamLimit = getSearchParamOrDefault("limit", 10);
+const getParamOffset = getSearchParamOrDefault("offset", 0);
+const getParamSortBy = getSearchParamOrDefault("sortBy", "auctionEnd");
+const getParamOrderBy = getSearchParamOrDefault("orderBy", "DESC");
 
 const AppWithSearch = () => {
-  const params = useParams();
+  const { searchId } = useParams();
   const [searchParams] = useSearchParams();
-  const searchId = params.searchId;
-  const [filters, setFilters] = useState();
+  const [initialFilters, setInitialFilters] = useState();
+  const shouldFetchFilters = !initialFilters;
+
+  const { setLimit, setOffset, setSortBy, setOrderBy } = useAppState();
+  const limit = getParamLimit(searchParams);
+  const offset = getParamOffset(searchParams);
+  const sortBy = getParamSortBy(searchParams);
+  const orderBy = getParamOrderBy(searchParams);
+
+  useEffect(() => setLimit(limit), [limit, setLimit]);
+  useEffect(() => setOffset(offset), [offset, setOffset]);
+  useEffect(() => setSortBy(sortBy), [sortBy, setSortBy]);
+  useEffect(() => setOrderBy(orderBy), [orderBy, setOrderBy]);
 
   const { isLoading: isLoadingAuctionSearch } = useSWRImmutable(
-    [`http://localhost:8080/api/v1/auctions/search/${searchId}`, searchId],
+    shouldFetchFilters
+      ? [`http://localhost:8080/api/v1/auctions/search/${searchId}`, searchId]
+      : null,
     async ([url]) => {
       const result = await axios.get(url);
       const auctionSearch = result.data;
-      const filters = buildFilters(auctionSearch);
-      setFilters(filters);
+      const filters = buildFilters(auctionSearch.criteria.criterias);
+      setInitialFilters(filters);
       return auctionSearch;
     },
     { revalidateOnFocus: false }
   );
 
-  if (isLoadingAuctionSearch || filters === undefined) {
+  if (isLoadingAuctionSearch || !initialFilters) {
     return <div>Loading ...</div>;
   }
 
-  return (
-    <App
-      initialSearchId={searchId}
-      initialLimit={getParamLimit(searchParams)}
-      initialOffset={getParamOffset(searchParams)}
-      initialSortBy={getParamSortBy(searchParams)}
-      initialOrderBy={getParamOrderBy(searchParams)}
-      initialFilters={filters}
-    />
-  );
+  return <App />;
 };
 
 const AppWithoutSearch = () => {
   const [searchParams] = useSearchParams();
+  const { setLimit, setOffset, setSortBy, setOrderBy } = useAppState();
+  const limit = getParamLimit(searchParams);
+  const offset = getParamOffset(searchParams);
+  const sortBy = getParamSortBy(searchParams);
+  const orderBy = getParamOrderBy(searchParams);
 
-  return (
-    <App
-      initialLimit={getParamLimit(searchParams)}
-      initialOffset={getParamOffset(searchParams)}
-      initialSortBy={getParamSortBy(searchParams)}
-      initialOrderBy={getParamOrderBy(searchParams)}
-      initialFilters={getDefaultFilters()}
-    />
-  );
+  useEffect(() => setLimit(limit), [limit, setLimit]);
+  useEffect(() => setOffset(offset), [offset, setOffset]);
+  useEffect(() => setSortBy(sortBy), [sortBy, setSortBy]);
+  useEffect(() => setOrderBy(orderBy), [orderBy, setOrderBy]);
+
+  return <App />;
 };
 
 const router = createBrowserRouter([
@@ -87,6 +92,8 @@ const router = createBrowserRouter([
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <AppStateProvider>
+      <RouterProvider router={router} />
+    </AppStateProvider>
   </React.StrictMode>
 );

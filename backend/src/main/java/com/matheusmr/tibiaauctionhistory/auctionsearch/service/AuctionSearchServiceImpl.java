@@ -12,6 +12,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -20,7 +21,7 @@ import java.util.UUID;
 
 import static com.matheusmr.tibiaauctionhistory.auctionsearch.model.Operator.*;
 
-@Component
+@Service
 public class AuctionSearchServiceImpl implements AuctionSearchService {
 
     public static final String INVALID_AMOUNT_OF_AUCTIONS_FETCHED_MSG =
@@ -102,7 +103,7 @@ public class AuctionSearchServiceImpl implements AuctionSearchService {
         } else if (operator == ELEMENT_MATCH){
             return Criteria
                     .where(auctionSearchCriterion.getField())
-                    .elemMatch(buildCriteria(criterias.getFirst()));
+                    .elemMatch(new Criteria().andOperator(buildCriteria(criterias)));
         } else {
             return buildFieldCriteria(auctionSearchCriterion);
         }

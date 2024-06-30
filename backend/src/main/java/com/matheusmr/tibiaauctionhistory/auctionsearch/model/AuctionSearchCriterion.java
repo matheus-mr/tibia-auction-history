@@ -1,10 +1,14 @@
 package com.matheusmr.tibiaauctionhistory.auctionsearch.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.common.base.Preconditions;
+import com.matheusmr.tibiaauctionhistory.auctionsearch.deserializer.AuctionSearchCriterionDeserializer;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import org.springframework.util.CollectionUtils;
+import lombok.With;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
@@ -12,6 +16,7 @@ import static com.matheusmr.tibiaauctionhistory.auctionsearch.model.Operator.*;
 
 @Getter
 @EqualsAndHashCode
+@JsonDeserialize(using = AuctionSearchCriterionDeserializer.class)
 public class AuctionSearchCriterion {
 
     String field;
@@ -20,7 +25,7 @@ public class AuctionSearchCriterion {
 
     List<Object> values;
 
-    List<AuctionSearchCriterion> criterias;
+    @With List<AuctionSearchCriterion> criterias;
 
     @JsonIgnore
     public Object getFirstValue(){
@@ -32,25 +37,75 @@ public class AuctionSearchCriterion {
         final boolean isElementMatchOperator = operator == ELEMENT_MATCH;
         final boolean operatorShouldHaveCriterias = isLogicOperator || isElementMatchOperator;
         final boolean operatorShouldHaveValues = !operatorShouldHaveCriterias;
+        final boolean operatorShouldHaveField = !isLogicOperator;
         final boolean hasEmptyValues = CollectionUtils.isEmpty(values);
         final boolean hasEmptyCriterias = CollectionUtils.isEmpty(criterias);
 
         Preconditions.checkArgument(
-                !operatorShouldHaveCriterias || hasEmptyValues,
-                "Logical/Element Match operators must not have values but instead criterias."
+                operator != null,
+                "Operator must not be null."
         );
-        Preconditions.checkArgument(
-                !operatorShouldHaveCriterias || !hasEmptyCriterias,
-                "Logical/Element Match operators must have criterias."
-        );
-        Preconditions.checkArgument(
-                !operatorShouldHaveValues || !hasEmptyValues,
-                "Simple operators must have values."
-        );
-        Preconditions.checkArgument(
-                !operatorShouldHaveValues || hasEmptyCriterias,
-                "Simple operators must not have criterias but instead values."
-        );
+
+        if (operatorShouldHaveField){
+            Preconditions.checkArgument(
+                    StringUtils.isNotBlank(field),
+                    "Non logical operators must have a field."
+            );
+        } else {
+            Preconditions.checkArgument(
+                    field == null,
+                    "Logical operators must not have a field."
+            );
+        }
+
+        if (operatorShouldHaveCriterias){
+            Preconditions.checkArgument(
+                    values == null,
+                    "Logical/Element Match operators must not have values but instead criterias."
+            );
+            Preconditions.checkArgument(
+                    !hasEmptyCriterias,
+                    "Logical/Element Match operators must have criterias."
+            );
+        }
+
+        if (operatorShouldHaveValues){
+            Preconditions.checkArgument(
+                    criterias == null,
+                    "Simple operators must not have criterias but instead values."
+            );
+            Preconditions.checkArgument(
+                    !hasEmptyValues,
+                    "Simple operators must have values."
+            );
+        }
+
+        if (operator.hasExpectedValuesAmount()){
+            Preconditions.checkArgument(
+                    values.size() == operator.getExpectedValues(),
+                    "%s operator must have exactly %s values.",
+                    operator.getKey(),
+                    operator.getExpectedValues()
+            );
+        }
+
+        if (operator.hasMaxValuesAmount()){
+            Preconditions.checkArgument(
+                    values.size() <= operator.getMaxValues(),
+                    "%s operator must have at most %s values.",
+                    operator.getKey(),
+                    operator.getMaxValues()
+            );
+        }
+
+        if (operator.hasMaxCriteriasAmount()){
+            Preconditions.checkArgument(
+                    criterias.size() <= operator.getMaxCriterias(),
+                    "%s operator must have at most %s criterias.",
+                    operator.getKey(),
+                    operator.getMaxCriterias()
+            );
+        }
 
         this.field = field;
         this.operator = operator;

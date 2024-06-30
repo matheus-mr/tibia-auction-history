@@ -1,0 +1,394 @@
+openapi: 3.0.0
+info:
+  title: Tibia Auction Search API
+  version: 1.0.0
+  description: API for searching the history of characters auctions of the game Tibia
+
+paths:
+  /api/v1/auctions:
+    get:
+      summary: Fetch auctions without filtering
+      description: Retrieve a list of auctions with pagination and optional sorting
+      parameters:
+        - $ref: "#/components/parameters/limit"
+        - $ref: "#/components/parameters/offset"
+        - $ref: "#/components/parameters/sortBy"
+        - $ref: "#/components/parameters/orderBy"
+      responses:
+        "200":
+          description: Successful response
+          headers:
+            X-Total-Count:
+              schema:
+                type: integer
+              description: Total number of auctions available
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Auction"
+
+  /api/v1/auctions/domain:
+    get:
+      summary: Get auction domain
+      description: Returns the domain of the application, including all possible values for each field
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuctionDomain"
+
+  /api/v1/auctions/search:
+    post:
+      summary: Create an auction search
+      description: Create a new auction search based on specified criteria
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AuctionSearchCriterion"
+      responses:
+        "201":
+          description: Successfully created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuctionSearch"
+
+  /api/v1/auctions/search/{searchId}:
+    get:
+      summary: Fetch details of a specific auction search
+      description: Retrieve the details of an auction search by its ID
+      parameters:
+        - $ref: "#/components/parameters/searchId"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuctionSearch"
+
+  /api/v1/auctions/search/{searchId}/results:
+    get:
+      summary: Fetch auctions filtering by a specific auction search
+      description: Retrieve auctions that match the criteria of a specific search
+      parameters:
+        - $ref: "#/components/parameters/searchId"
+        - $ref: "#/components/parameters/limit"
+        - $ref: "#/components/parameters/offset"
+        - $ref: "#/components/parameters/sortBy"
+        - $ref: "#/components/parameters/orderBy"
+      responses:
+        "200":
+          description: Successful response
+          headers:
+            X-Total-Count:
+              schema:
+                type: integer
+              description: Total number of auctions available
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Auction"
+
+components:
+  parameters:
+    limit:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 1000
+        default: 100
+    offset:
+      name: offset
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        default: 0
+    sortBy:
+      name: sortBy
+      in: query
+      schema:
+        type: string
+        enum: [name, level, vocation, world, auctionEnd]
+        default: auctionEnd
+    orderBy:
+      name: orderBy
+      in: query
+      schema:
+        type: string
+        enum: [asc, desc]
+        default: desc
+    searchId:
+      name: searchId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+
+  schemas:
+    Auction:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        level:
+          type: integer
+        vocation:
+          type: string
+        world:
+          type: string
+        creationDate:
+          type: string
+          format: date-time
+        auctionEnd:
+          type: string
+          format: date-time
+        winningBid:
+          type: integer
+        axeFighting:
+          type: integer
+        clubFighting:
+          type: integer
+        distanceFighting:
+          type: integer
+        fishing:
+          type: integer
+        fistFighting:
+          type: integer
+        magicLevel:
+          type: integer
+        shielding:
+          type: integer
+        swordFighting:
+          type: integer
+      example:
+        id: 12345
+        name: "High Level Paladin"
+        level: 250
+        vocation: "PALADIN"
+        world: "Antica"
+        creationDate: "2023-06-25T10:00:00Z"
+        auctionEnd: "2023-07-02T10:00:00Z"
+        winningBid: 50000
+        axeFighting: 95
+        clubFighting: 80
+        distanceFighting: 120
+        fishing: 70
+        fistFighting: 85
+        magicLevel: 30
+        shielding: 100
+        swordFighting: 90
+
+    AuctionDomain:
+      type: object
+      properties:
+        vocations:
+          type: array
+          items:
+            type: string
+        worlds:
+          type: array
+          items:
+            type: string
+        charms:
+          type: array
+          items:
+            type: string
+        items:
+          type: array
+          items:
+            type: string
+        storeItems:
+          type: array
+          items:
+            type: string
+        mounts:
+          type: array
+          items:
+            type: string
+        storeMounts:
+          type: array
+          items:
+            type: string
+        outfits:
+          type: array
+          items:
+            type: string
+        storeOutfits:
+          type: array
+          items:
+            type: string
+        imbuements:
+          type: array
+          items:
+            type: string
+        completedQuestLines:
+          type: array
+          items:
+            type: string
+        titles:
+          type: array
+          items:
+            type: string
+        achievements:
+          type: array
+          items:
+            type: string
+      example:
+        vocations:
+          - "KNIGHT"
+          - "PALADIN"
+          - "SORCERER"
+          - "DRUID"
+        worlds:
+          - "Antica"
+          - "Astera"
+          - "Belobra"
+          - "Jadebra"
+          - "Kalibra"
+          - "Wintera"
+          - "Yonabra"
+        charms:
+          - "Adrenaline Burst"
+          - "Cleanse"
+          - "Low Blow"
+          - "Numb"
+        items:
+          - "abyss hammer"
+          - "acid resistant fishing rod"
+          - "drakinata"
+          - "draptor scales"
+        storeItems:
+          - "animate dead rune"
+          - "arrival at Thais"
+          - "avalanche rune"
+          - "lordly tapestry"
+          - "magic gold converter"
+        mounts:
+          - "Dragonling"
+          - "Draptor"
+          - "Tiger Slug"
+          - "Tin Lizzard"
+          - "Titanica"
+          - "Undead Cavebear"
+        storeMounts:
+          - "Ebony Tiger"
+          - "Flamesteed"
+          - "Floating Augur"
+          - "Plumfish"
+        outfits:
+          - "Afflicted"
+          - "Assassin"
+          - "Barbarian"
+          - "Battle Mage"
+        storeOutfits:
+          - "Chaos Acolyte"
+          - "Conjurer"
+          - "Death Herald"
+          - "Entrepreneur"
+        imbuements:
+          - "Powerful Chop"
+          - "Powerful Cloud Fabric"
+          - "Powerful Lich Shroud"
+          - "Powerful Precision"
+        completedQuestLines:
+          - "Child of Destiny"
+          - "Children of the Revolution"
+          - "Dark Trails"
+          - "The Rookie Guard"
+        titles:
+          - "Beastrider (Grade 3)"
+          - "Creature of Habit (Grade 1)"
+          - "Drakenbane"
+          - "Gold Hoarder"
+        achievements: []
+
+    AuctionSearchCriterion:
+      type: object
+      properties:
+        field:
+          type: string
+        operator:
+          $ref: "#/components/schemas/Operator"
+        values:
+          type: array
+          items:
+            type: object
+        criterias:
+          type: array
+          items:
+            $ref: "#/components/schemas/AuctionSearchCriterion"
+      example:
+        operator: "and"
+        criterias:
+          - field: "level"
+            operator: "gt"
+            values: [500]
+          - field: "vocation"
+            operator: "eq"
+            values: ["KNIGHT"]
+
+    AuctionSearch:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        criteria:
+          $ref: "#/components/schemas/AuctionSearchCriterion"
+      example:
+        id: "5d41b995-b88a-4291-8238-a8fe9ccd5d59"
+        criteria:
+          operator: "and"
+          criterias:
+            - field: "level"
+              operator: "gt"
+              values: [500]
+            - field: "vocation"
+              operator: "eq"
+              values: ["KNIGHT"]
+
+    Operator:
+      type: string
+      enum:
+        - and
+        - or
+        - eq
+        - ne
+        - in
+        - nin
+        - gt
+        - gte
+        - lt
+        - lte
+        - bt
+        - elemMatch
+        - regex
+      x-enum-descriptions:
+        - "Logical AND operator. Max amount of criteria in the search is 30."
+        - "Logical OR operator. Max amount of criteria in the search is 30."
+        - "Equal to. Expected values in the search is 1."
+        - "Not equal to. Expected values in the search is 1."
+        - "In. Max amount of values in the search is 50."
+        - "Not in. Max amount of values in the search is 50."
+        - "Greater than. Expected values in the search is 1."
+        - "Greater than or equal to. Expected values in the search is 1."
+        - "Less than. Expected values in the search is 1."
+        - "Less than or equal to. Expected values in the search is 1."
+        - "Between. Expected values in the search is 2."
+        - "Element match. Matches fields of an object to some criterias. Max amount of criteria in the search is 30."
+        - "Regular expression. Matches strings values to an regex. Expected values in the search is 1."

@@ -1,8 +1,6 @@
-version: '3.5'
-
 services:
   mongo:
-    image: mongo:latest
+    image: mongo:7.0.0
     container_name: mongo
     environment:
       MONGO_INITDB_DATABASE: tibia-auction-history
@@ -10,3 +8,12 @@ services:
       - 27017:27017
     volumes:
       - ./data/mongodb:/data/db
+
+  redis:
+    image: redis:7.2.5
+    container_name: redis
+    ports:
+      - 6379:6379
+    command: redis-server /usr/local/etc/redis/redis.conf
+    volumes:
+      - ./docker/redis.conf:/usr/local/etc/redis/redis.conf

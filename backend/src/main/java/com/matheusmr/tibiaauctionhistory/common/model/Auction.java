@@ -1,10 +1,9 @@
 package com.matheusmr.tibiaauctionhistory.common.model;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
@@ -12,15 +11,19 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Document(collection = "auctions")
-@Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
+@Getter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@NoArgsConstructor
+@AllArgsConstructor
 public class Auction {
 
     @Id
+    @EqualsAndHashCode.Include
     Integer id;
 
-    boolean isInErrorState;
+    boolean inErrorState;
 
     String name;
     Integer level;
@@ -32,6 +35,7 @@ public class Auction {
     LocalDateTime auctionEnd;
     Integer minimumBid;
     Integer winningBid;
+    @Indexed
     Boolean sold;
 
     Integer mountsAmount;

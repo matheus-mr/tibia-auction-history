@@ -10,6 +10,7 @@ import com.matheusmr.tibiaauctionhistory.common.model.AuctionDTO;
 import com.matheusmr.tibiaauctionhistory.common.model.AuctionsResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,8 +36,10 @@ public class AuctionSearchController {
     }
 
     @PostMapping
-    public UUID createAuctionSearch(@RequestBody AuctionSearchCriterion criteria){
-        return auctionSearchService.createAuctionSearch(criteria).getId();
+    public ResponseEntity<UUID> createAuctionSearch(@RequestBody AuctionSearchCriterion criteria){
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(auctionSearchService.createAuctionSearch(criteria).getId());
     }
 
     @GetMapping("/{id}")

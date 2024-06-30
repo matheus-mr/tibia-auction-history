@@ -1,5 +1,8 @@
 package com.matheusmr.tibiaauctionhistory.common.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Getter;
+
 import java.util.Arrays;
 
 public enum Vocation {
@@ -10,20 +13,13 @@ public enum Vocation {
     DRUID("Druid", "Elder Druid"),
     ;
 
+    @Getter
     private final String name;
     private final String promotedName;
 
     Vocation(String name, String promotedName) {
         this.name = name;
         this.promotedName = promotedName;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getPromotedName() {
-        return promotedName;
     }
 
     public static Vocation getByName(String name){

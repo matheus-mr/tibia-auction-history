@@ -18,7 +18,8 @@ public interface AuctionRepository extends MongoRepository<Auction, Integer> {
                   charms: [
                     { $unwind: "$charms" },
                     { $group: { _id: "$charms" } },
-                    { $sort: { _id: 1 } }
+                    { $addFields: { lowerCaseName: { $toLower: "$_id" } } },
+                    { $sort: { lowerCaseName: 1 } }
                   ],
                   items: [
                     { $unwind: "$items" },
