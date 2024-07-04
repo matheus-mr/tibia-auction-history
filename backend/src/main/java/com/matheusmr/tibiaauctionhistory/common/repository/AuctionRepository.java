@@ -2,9 +2,16 @@ package com.matheusmr.tibiaauctionhistory.common.repository;
 
 import com.matheusmr.tibiaauctionhistory.common.model.Auction;
 import com.matheusmr.tibiaauctionhistory.common.model.AuctionDomainDTO;
+import org.bson.Document;
+import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Repository
 public interface AuctionRepository extends MongoRepository<Auction, Integer> {
@@ -164,4 +171,11 @@ public interface AuctionRepository extends MongoRepository<Auction, Integer> {
             """
     })
     AuctionDomainDTO getDomain();
+
+    @Query(value = "{}", fields = "{ '_id': 1 }")
+    List<Document> findAllIdsDocuments();
+
+    default Set<Integer> findAllIds(){
+        return findAllIdsDocuments().stream().map(doc -> (int) doc.get("_id")).collect(Collectors.toSet());
+    }
 }

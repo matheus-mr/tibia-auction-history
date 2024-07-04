@@ -38,7 +38,7 @@ public class AbstractIntegrationTests {
     @Container
     @ServiceConnection
     private final static MongoDBContainer mongoDBContainer =
-            new MongoDBContainer("mongo:latest")
+            new MongoDBContainer("mongo:7.0.0")
                     .withExposedPorts(27017);
 
     @Autowired
