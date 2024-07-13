@@ -6,7 +6,6 @@ import {
   Table,
   TableCell,
   TableSortLabel,
-  useTheme,
 } from "@mui/material";
 import { TableRow } from "@mui/material";
 import { TableBody } from "@mui/material";
@@ -16,7 +15,6 @@ import { TableHead } from "@mui/material";
 import { TableContainer } from "@mui/material";
 import { visuallyHidden } from "@mui/utils";
 import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
-import LastPageIcon from "@mui/icons-material/LastPage";
 import FirstPageIcon from "@mui/icons-material/FirstPage";
 import { useAppState } from "../AppStateContext";
 
@@ -30,8 +28,7 @@ const columns = [
 ];
 
 function TablePaginationActions(props) {
-  const theme = useTheme();
-  const { count, page, rowsPerPage, onPageChange } = props;
+  const { page, onPageChange } = props;
 
   const handleFirstPageButtonClick = (event) => {
     onPageChange(event, 0);
@@ -45,10 +42,6 @@ function TablePaginationActions(props) {
     onPageChange(event, page + 1);
   };
 
-  const handleLastPageButtonClick = (event) => {
-    onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
-  };
-
   return (
     <Box sx={{ flexShrink: 0, ml: 2.5 }}>
       <IconButton
@@ -56,36 +49,20 @@ function TablePaginationActions(props) {
         disabled={page === 0}
         aria-label="first page"
       >
-        {theme.direction === "rtl" ? <LastPageIcon /> : <FirstPageIcon />}
+        <FirstPageIcon />
       </IconButton>
       <IconButton
         onClick={handleBackButtonClick}
         disabled={page === 0}
         aria-label="previous page"
       >
-        {theme.direction === "rtl" ? (
-          <KeyboardArrowRight />
-        ) : (
-          <KeyboardArrowLeft />
-        )}
+        <KeyboardArrowLeft />
       </IconButton>
       <IconButton
         onClick={handleNextButtonClick}
-        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
         aria-label="next page"
       >
-        {theme.direction === "rtl" ? (
-          <KeyboardArrowLeft />
-        ) : (
-          <KeyboardArrowRight />
-        )}
-      </IconButton>
-      <IconButton
-        onClick={handleLastPageButtonClick}
-        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-        aria-label="last page"
-      >
-        {theme.direction === "rtl" ? <FirstPageIcon /> : <LastPageIcon />}
+        <KeyboardArrowRight />
       </IconButton>
     </Box>
   );
@@ -184,7 +161,7 @@ export default function AuctionTable({
   isErrorAuctions,
 }) {
   const { state, dispatch, setSimpleFieldValue } = useAppState();
-  const { totalCount, currentPage, rowsPerPage, sortBy, orderBy } = state;
+  const { currentPage, rowsPerPage, sortBy, orderBy } = state;
 
   const onClickSort = (columnId) => (event) => {
     const isAsc = orderBy === "ASC";
@@ -227,7 +204,7 @@ export default function AuctionTable({
       <TablePagination
         rowsPerPageOptions={[10, 50, 100]}
         component="div"
-        count={totalCount || 0}
+        count={-1}
         rowsPerPage={parseInt(rowsPerPage)}
         page={currentPage}
         onPageChange={(event, page) => setSimpleFieldValue("currentPage", page)}

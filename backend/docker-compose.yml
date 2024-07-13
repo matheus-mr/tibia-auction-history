@@ -8,6 +8,11 @@ services:
       - 27017:27017
     volumes:
       - ./data/mongodb:/data/db
+    deploy:
+      resources:
+        limits:
+          memory: '8gb'
+          cpus: '2'
 
   redis:
     image: redis:7.2.5
@@ -17,3 +22,7 @@ services:
     command: redis-server /usr/local/etc/redis/redis.conf
     volumes:
       - ./docker/redis.conf:/usr/local/etc/redis/redis.conf
+    deploy:
+      resources:
+        limits:
+          memory: '1.5gb'

@@ -12,10 +12,12 @@ import ImbuementsAndQuestsFilter from "./ImbuementsAndQuestsFilter";
 import TitlesAndAchievementsFilter from "./TitlesAndAchievementsFilter";
 import MainInfoFilter from "./MainInfoFilter";
 import SearchButton from "./SearchButton";
+import { useAppState } from "../AppStateContext";
 
 export default function AuctionFilters({ onClickSearch }) {
+  const { getFilterValue, setSimpleFieldValue } = useAppState();
   return (
-    <Accordion defaultExpanded={true}>
+    <Accordion expanded={getFilterValue("expanded")} onChange={(event, expanded) => setSimpleFieldValue("expanded", expanded)}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         <Typography>Filters</Typography>
       </AccordionSummary>

@@ -1,4 +1,5 @@
 export const getDefaultFilters = () => ({
+  expanded: true,
   name: "",
   level: "",
   vocations: [],

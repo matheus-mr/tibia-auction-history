@@ -37,10 +37,6 @@ function App() {
     ],
     async ([url]) => {
       const result = await axios.get(url);
-      setSimpleFieldValue(
-        "totalCount",
-        getTotalCountFromHeaders(result.headers)
-      );
       return result.data;
     },
     { revalidateOnFocus: false }
@@ -128,10 +124,5 @@ const getAuctionResultsPath = (
   }?limit=${rowsPerPage}&offset=${
     currentPage * rowsPerPage
   }&sortBy=${sortBy}&orderBy=${orderBy}`;
-
-const getTotalCountFromHeaders = (headers) => {
-  const totalCountStr = headers["x-total-count"];
-  return totalCountStr !== undefined ? parseInt(totalCountStr) : null;
-};
 
 export default App;

@@ -14,16 +14,16 @@ export const buildAuctionSearch = (filters) => {
       buildIntegerCriteria(filters.magicLevel, "magicLevel"),
       buildIntegerCriteria(filters.shielding, "shielding"),
       buildIntegerCriteria(filters.fishing, "fishing"),
-      buildArrayCriteria(filters.items, "items"),
-      buildArrayCriteria(filters.storeItems, "storeItems"),
+      buildItemsCriteria(filters.items, "items"),
+      buildItemsCriteria(filters.storeItems, "storeItems"),
       buildArrayCriteria(filters.mounts, "mounts"),
       buildArrayCriteria(filters.storeMounts, "storeMounts"),
       buildArrayCriteria(filters.imbuements, "imbuements"),
       buildArrayCriteria(filters.completedQuestLines, "completedQuestLines"),
       buildArrayCriteria(filters.titles, "titles"),
       buildArrayCriteria(filters.achievements, "achievements"),
-      buildOutfitsCriteria(filters.outfits),
-      buildOutfitsCriteria(filters.storeOutfits),
+      buildOutfitsCriteria(filters.outfits, "outfits"),
+      buildOutfitsCriteria(filters.storeOutfits, "storeOutfits"),
     ].filter((criteria) => criteria !== null),
   };
 };
@@ -52,7 +52,7 @@ const buildVocationsCriteria = (vocations) => {
   };
 };
 
-const buildOutfitsCriteria = (outfits) => {
+const buildOutfitsCriteria = (outfits, field) => {
   if (!outfits.length) {
     return null;
   }
@@ -60,12 +60,29 @@ const buildOutfitsCriteria = (outfits) => {
   return {
     operator: "AND",
     criterias: outfits.map(({ name, firstAddon, secondAddon }) => ({
-      field: "outfits",
+      field,
       operator: "elemMatch",
       criterias: [
         { field: "name", operator: "eq", values: [name] },
         { field: "hasFirstAddon", operator: "eq", values: [firstAddon] },
         { field: "hasSecondAddon", operator: "eq", values: [secondAddon] },
+      ],
+    })),
+  };
+};
+
+const buildItemsCriteria = (items, field) => {
+  if (!items.length) {
+    return null;
+  }
+
+  return {
+    operator: "AND",
+    criterias: items.map(item => ({
+      field,
+      operator: "elemMatch",
+      criterias: [
+        { field: "name", operator: "eq", values: [item] },
       ],
     })),
   };
