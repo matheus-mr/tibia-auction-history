@@ -1,6 +1,6 @@
-package com.matheusmr.tibiaauctionhistory.auctionsearch.converter;
+package com.tibiaauctionhistory.module.auctionsearch.converter;
 
-import com.matheusmr.tibiaauctionhistory.auctionsearch.exception.InvalidSortDirectionException;
+import com.tibiaauctionhistory.module.auctionsearch.exception.InvalidSortDirectionException;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;

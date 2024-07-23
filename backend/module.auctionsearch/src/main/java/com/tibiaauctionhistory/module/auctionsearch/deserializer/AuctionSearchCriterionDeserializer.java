@@ -1,4 +1,4 @@
-package com.matheusmr.tibiaauctionhistory.auctionsearch.deserializer;
+package com.tibiaauctionhistory.module.auctionsearch.deserializer;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -6,8 +6,8 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.matheusmr.tibiaauctionhistory.auctionsearch.model.AuctionSearchCriterion;
-import com.matheusmr.tibiaauctionhistory.auctionsearch.model.Operator;
+import com.tibiaauctionhistory.module.auctionsearch.model.AuctionSearchCriterion;
+import com.tibiaauctionhistory.module.auctionsearch.model.Operator;
 
 import java.io.IOException;
 import java.util.ArrayList;

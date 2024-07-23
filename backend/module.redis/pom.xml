@@ -5,11 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.matheusmr</groupId>
-        <artifactId>tibiaauctionhistory-parent</artifactId>
+        <groupId>com.tibiaauctionhistory</groupId>
+        <artifactId>tibia-auction-history-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
+    <groupId>com.tibiaauctionhistory.module.redis</groupId>
     <artifactId>module.redis</artifactId>
     <name>Redis module</name>
     <description>
@@ -17,15 +18,9 @@
         Any modules importing this one will be able to connect to Redis.
     </description>
 
-    <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
     <dependencies>
         <dependency>
-            <groupId>com.matheusmr</groupId>
+            <groupId>com.tibiaauctionhistory.module.common</groupId>
             <artifactId>module.common</artifactId>
             <version>${project.version}</version>
         </dependency>

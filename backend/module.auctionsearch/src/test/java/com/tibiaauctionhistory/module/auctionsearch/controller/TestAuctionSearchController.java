@@ -1,19 +1,19 @@
-package com.matheusmr.tibiaauctionhistory.auctionsearch.controller;
+package com.tibiaauctionhistory.module.auctionsearch.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.matheusmr.tibiaauctionhistory.AbstractIntegrationTests;
-import com.matheusmr.tibiaauctionhistory.auctionsearch.deserializer.AuctionSearchCriterionDeserializer;
+import com.tibiaauctionhistory.module.auctionsearch.deserializer.AuctionSearchCriterionDeserializer;
 import com.matheusmr.tibiaauctionhistory.model.AuctionSearch;
 import com.matheusmr.tibiaauctionhistory.model.AuctionSearchCriterion;
 import com.matheusmr.tibiaauctionhistory.model.Operator;
-import com.matheusmr.tibiaauctionhistory.common.model.AuctionDTO;
+import com.tibiaauctionhistory.module.common.model.AuctionDTO;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.UUID;
 
-import static com.matheusmr.tibiaauctionhistory.auctionsearch.converter.SortDirectionConverter.INVALID_SORT_DIRECTION_MSG;
-import static com.matheusmr.tibiaauctionhistory.auctionsearch.converter.SortableFieldConverter.INVALID_SORTABLE_FIELD_MSG;
+import static com.tibiaauctionhistory.module.auctionsearch.converter.SortDirectionConverter.INVALID_SORT_DIRECTION_MSG;
+import static com.tibiaauctionhistory.module.auctionsearch.converter.SortableFieldConverter.INVALID_SORTABLE_FIELD_MSG;
 import static com.matheusmr.tibiaauctionhistory.service.AuctionSearchServiceImpl.AUCTION_SEARCH_NOT_FOUND_MSG;
 import static com.matheusmr.tibiaauctionhistory.service.AuctionSearchServiceImpl.INVALID_AMOUNT_OF_AUCTIONS_FETCHED_MSG;
 import static org.junit.jupiter.api.Assertions.*;

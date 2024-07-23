@@ -1,3 +1,3 @@
-package com.matheusmr.tibiaauctionhistory.common.model;
+package com.tibiaauctionhistory.module.common.model;
 
 public record Item (long amount, String name){}

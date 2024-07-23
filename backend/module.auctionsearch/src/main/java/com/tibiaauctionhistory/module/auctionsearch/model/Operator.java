@@ -1,4 +1,4 @@
-package com.matheusmr.tibiaauctionhistory.auctionsearch.model;
+package com.tibiaauctionhistory.module.auctionsearch.model;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;

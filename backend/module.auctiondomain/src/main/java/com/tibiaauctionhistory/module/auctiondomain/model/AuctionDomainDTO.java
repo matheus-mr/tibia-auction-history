@@ -1,4 +1,4 @@
-package com.matheusmr.tibiaauctionhistory.auctiondomain.model;
+package com.tibiaauctionhistory.module.auctiondomain.model;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;

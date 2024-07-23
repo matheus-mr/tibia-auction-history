@@ -1,10 +1,10 @@
-package com.matheusmr.tibiaauctionhistory.auctionsearch.service;
+package com.tibiaauctionhistory.module.auctionsearch.service;
 
-import com.matheusmr.tibiaauctionhistory.auctionsearch.exception.AuctionSearchNotFoundException;
-import com.matheusmr.tibiaauctionhistory.auctionsearch.model.AuctionSearch;
-import com.matheusmr.tibiaauctionhistory.auctionsearch.model.AuctionSearchCriterion;
-import com.matheusmr.tibiaauctionhistory.common.model.Auction;
-import com.matheusmr.tibiaauctionhistory.common.model.SortableField;
+import com.tibiaauctionhistory.module.auctionsearch.exception.AuctionSearchNotFoundException;
+import com.tibiaauctionhistory.module.auctionsearch.model.AuctionSearch;
+import com.tibiaauctionhistory.module.auctionsearch.model.AuctionSearchCriterion;
+import com.tibiaauctionhistory.module.common.model.Auction;
+import com.tibiaauctionhistory.module.common.model.SortableField;
 import org.springframework.data.domain.Sort;
 
 import java.util.List;

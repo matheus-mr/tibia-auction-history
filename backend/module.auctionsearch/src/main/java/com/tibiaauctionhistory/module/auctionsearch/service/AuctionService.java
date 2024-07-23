@@ -1,8 +1,7 @@
-package com.matheusmr.tibiaauctionhistory.auctionsearch.service;
+package com.tibiaauctionhistory.module.auctionsearch.service;
 
-import com.matheusmr.tibiaauctionhistory.common.model.Auction;
-import com.matheusmr.tibiaauctionhistory.common.model.SortableField;
-import com.matheusmr.tibiaauctionhistory.common.model.AuctionDomainDTO;
+import com.tibiaauctionhistory.module.common.model.Auction;
+import com.tibiaauctionhistory.module.common.model.SortableField;
 import org.springframework.data.domain.Sort;
 
 import java.util.List;
@@ -15,6 +14,4 @@ public interface AuctionService {
             SortableField sortBy,
             Sort.Direction orderBy
     );
-
-    AuctionDomainDTO getDomain();
 }

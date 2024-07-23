@@ -10,10 +10,10 @@ import org.springframework.context.annotation.ComponentScan;
 		"com.tibiaauctionhistory.module.common",
 		"com.tibiaauctionhistory.module.mongodb"
 })
-public class TibiaAuctionFetchApplication {
+public class TibiaAuctionFetchApplicationRunner {
 
 	public static void main(String[] args) {
-		SpringApplication.run(TibiaAuctionFetchApplication.class, args);
+		SpringApplication.run(TibiaAuctionFetchApplicationRunner.class, args);
 	}
 
 }

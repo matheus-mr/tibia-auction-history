@@ -1,9 +1,9 @@
-package com.matheusmr.tibiaauctionhistory.auctionsearch.model;
+package com.tibiaauctionhistory.module.auctionsearch.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.common.base.Preconditions;
-import com.matheusmr.tibiaauctionhistory.auctionsearch.deserializer.AuctionSearchCriterionDeserializer;
+import com.tibiaauctionhistory.module.auctionsearch.deserializer.AuctionSearchCriterionDeserializer;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.With;
@@ -12,7 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
-import static com.matheusmr.tibiaauctionhistory.auctionsearch.model.Operator.*;
+import static com.tibiaauctionhistory.module.auctionsearch.model.Operator.*;
 
 @Getter
 @EqualsAndHashCode

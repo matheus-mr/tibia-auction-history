@@ -1,4 +1,4 @@
-package com.tibiaauctionhistory.service.web.controllers;
+package com.tibiaauctionhistory.service.web.controller;
 
 import com.tibiaauctionhistory.module.auctionsearch.mapper.AuctionSearchMapper;
 import com.tibiaauctionhistory.module.auctionsearch.model.AuctionSearchCriterion;

@@ -1,6 +1,6 @@
-package com.matheusmr.tibiaauctionhistory.auctiondomain.service;
+package com.tibiaauctionhistory.module.auctiondomain.service;
 
-import com.matheusmr.tibiaauctionhistory.auctiondomain.model.AuctionDomainDTO;
+import com.tibiaauctionhistory.module.auctiondomain.model.AuctionDomainDTO;
 
 public interface AuctionDomainService {
 

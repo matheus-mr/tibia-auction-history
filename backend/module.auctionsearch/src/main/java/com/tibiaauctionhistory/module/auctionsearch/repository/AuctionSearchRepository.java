@@ -1,6 +1,6 @@
-package com.matheusmr.tibiaauctionhistory.auctionsearch.repository;
+package com.tibiaauctionhistory.module.auctionsearch.repository;
 
-import com.matheusmr.tibiaauctionhistory.auctionsearch.model.AuctionSearch;
+import com.tibiaauctionhistory.module.auctionsearch.model.AuctionSearch;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

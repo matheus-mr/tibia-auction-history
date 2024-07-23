@@ -1,4 +1,4 @@
-package com.matheusmr.tibiaauctionhistory.utils;
+package com.tibiaauctionhistory.module.utils;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;

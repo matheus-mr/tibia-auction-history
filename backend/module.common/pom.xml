@@ -5,26 +5,21 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.matheusmr</groupId>
-        <artifactId>tibiaauctionhistory-parent</artifactId>
+        <groupId>com.tibiaauctionhistory</groupId>
+        <artifactId>tibia-auction-history-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
+    <groupId>com.tibiaauctionhistory.module.common</groupId>
     <artifactId>module.common</artifactId>
     <name>Common module</name>
     <description>
         Module for things that are common to other modules but doesn't need a module itself.
     </description>
 
-    <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
     <dependencies>
         <dependency>
-            <groupId>com.matheusmr</groupId>
+            <groupId>com.tibiaauctionhistory.module.mongodb</groupId>
             <artifactId>module.mongodb</artifactId>
             <version>${project.version}</version>
         </dependency>

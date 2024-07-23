@@ -1,7 +1,7 @@
-package com.matheusmr.tibiaauctionhistory.auctionsearch.converter;
+package com.tibiaauctionhistory.module.auctionsearch.converter;
 
-import com.matheusmr.tibiaauctionhistory.auctionsearch.exception.InvalidSortableFieldException;
-import com.matheusmr.tibiaauctionhistory.common.model.SortableField;
+import com.tibiaauctionhistory.module.auctionsearch.exception.InvalidSortableFieldException;
+import com.tibiaauctionhistory.module.common.model.SortableField;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 

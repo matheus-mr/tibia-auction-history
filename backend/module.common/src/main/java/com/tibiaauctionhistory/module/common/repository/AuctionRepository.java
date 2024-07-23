@@ -1,6 +1,6 @@
-package com.matheusmr.tibiaauctionhistory.common.repository;
+package com.tibiaauctionhistory.module.common.repository;
 
-import com.matheusmr.tibiaauctionhistory.common.model.Auction;
+import com.tibiaauctionhistory.module.common.model.Auction;
 import org.bson.Document;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;

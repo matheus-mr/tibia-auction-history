@@ -1,4 +1,4 @@
-package com.matheusmr.tibiaauctionhistory.auctionsearch.configuration;
+package com.tibiaauctionhistory.service.web.configuration;
 
 import jakarta.servlet.*;
 import org.slf4j.MDC;

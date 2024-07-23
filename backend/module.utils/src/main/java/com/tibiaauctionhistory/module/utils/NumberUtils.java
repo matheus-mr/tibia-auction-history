@@ -1,4 +1,4 @@
-package com.matheusmr.tibiaauctionhistory.utils;
+package com.tibiaauctionhistory.module.utils;
 
 public class NumberUtils {
 

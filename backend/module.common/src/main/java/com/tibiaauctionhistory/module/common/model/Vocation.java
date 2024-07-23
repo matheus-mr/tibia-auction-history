@@ -1,4 +1,4 @@
-package com.matheusmr.tibiaauctionhistory.common.model;
+package com.tibiaauctionhistory.module.common.model;
 
 import lombok.Getter;
 

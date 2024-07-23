@@ -1,9 +1,9 @@
-package com.matheusmr.tibiaauctionhistory.auctionsearch.configuration;
+package com.tibiaauctionhistory.service.web.configuration;
 
 import com.google.common.base.Throwables;
-import com.matheusmr.tibiaauctionhistory.auctionsearch.exception.AuctionSearchNotFoundException;
-import com.matheusmr.tibiaauctionhistory.auctionsearch.exception.InvalidSortDirectionException;
-import com.matheusmr.tibiaauctionhistory.auctionsearch.exception.InvalidSortableFieldException;
+import com.tibiaauctionhistory.module.auctionsearch.exception.AuctionSearchNotFoundException;
+import com.tibiaauctionhistory.module.auctionsearch.exception.InvalidSortDirectionException;
+import com.tibiaauctionhistory.module.auctionsearch.exception.InvalidSortableFieldException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

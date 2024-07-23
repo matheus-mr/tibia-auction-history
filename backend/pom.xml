@@ -10,21 +10,24 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
-	<groupId>com.matheusmr</groupId>
-	<artifactId>tibiaauctionhistory-parent</artifactId>
+	<groupId>com.tibiaauctionhistory</groupId>
+	<artifactId>tibia-auction-history-parent</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>tibiaauctionhistory</name>
+	<name>tibia-auction-history</name>
 	<description>Tibia Auction History</description>
 	<packaging>pom</packaging>
 
 	<modules>
 		<module>module.common</module>
-		<module>service.auctionfetch</module>
-		<module>service.auctionsearch</module>
         <module>module.redis</module>
 		<module>module.mongodb</module>
         <module>module.utils</module>
-    </modules>
+        <module>module.auctiondomain</module>
+		<module>module.auctionsearch</module>
+		<module>service.auctionfetcher</module>
+		<module>service.auctiondomainupdater</module>
+		<module>service.web</module>
+	</modules>
 
 	<properties>
 		<java.version>21</java.version>

@@ -1,13 +1,13 @@
-package com.matheusmr.tibiaauctionhistory.auctionsearch.service;
+package com.tibiaauctionhistory.module.auctionsearch.service;
 
 import com.google.common.base.Preconditions;
-import com.matheusmr.tibiaauctionhistory.auctionsearch.exception.AuctionSearchNotFoundException;
-import com.matheusmr.tibiaauctionhistory.auctionsearch.model.AuctionSearch;
-import com.matheusmr.tibiaauctionhistory.auctionsearch.model.AuctionSearchCriterion;
-import com.matheusmr.tibiaauctionhistory.auctionsearch.model.Operator;
-import com.matheusmr.tibiaauctionhistory.auctionsearch.repository.AuctionSearchRepository;
-import com.matheusmr.tibiaauctionhistory.common.model.Auction;
-import com.matheusmr.tibiaauctionhistory.common.model.SortableField;
+import com.tibiaauctionhistory.module.auctionsearch.exception.AuctionSearchNotFoundException;
+import com.tibiaauctionhistory.module.auctionsearch.model.AuctionSearch;
+import com.tibiaauctionhistory.module.auctionsearch.model.AuctionSearchCriterion;
+import com.tibiaauctionhistory.module.auctionsearch.model.Operator;
+import com.tibiaauctionhistory.module.auctionsearch.repository.AuctionSearchRepository;
+import com.tibiaauctionhistory.module.common.model.Auction;
+import com.tibiaauctionhistory.module.common.model.SortableField;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;

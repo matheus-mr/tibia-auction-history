@@ -1,7 +1,7 @@
-package com.matheusmr.tibiaauctionhistory.common.mapper;
+package com.tibiaauctionhistory.module.common.mapper;
 
-import com.matheusmr.tibiaauctionhistory.common.model.Auction;
-import com.matheusmr.tibiaauctionhistory.common.model.AuctionDTO;
+import com.tibiaauctionhistory.module.common.model.Auction;
+import com.tibiaauctionhistory.module.common.model.AuctionDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

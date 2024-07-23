@@ -1,4 +1,4 @@
-package com.matheusmr.tibiaauctionhistory.auctionsearch.model;
+package com.tibiaauctionhistory.module.auctionsearch.model;
 
 import com.matheusmr.tibiaauctionhistory.model.AuctionSearchCriterion;
 import com.matheusmr.tibiaauctionhistory.model.Operator;

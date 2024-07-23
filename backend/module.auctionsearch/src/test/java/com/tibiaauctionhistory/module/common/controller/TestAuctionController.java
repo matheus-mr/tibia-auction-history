@@ -1,10 +1,10 @@
-package com.matheusmr.tibiaauctionhistory.common.controller;
+package com.tibiaauctionhistory.module.common.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.matheusmr.tibiaauctionhistory.AbstractIntegrationTests;
-import com.matheusmr.tibiaauctionhistory.common.model.AuctionDTO;
+import com.tibiaauctionhistory.module.common.model.AuctionDTO;
 import com.matheusmr.tibiaauctionhistory.common.model.AuctionDomainDTO;
-import com.matheusmr.tibiaauctionhistory.common.model.Vocation;
+import com.tibiaauctionhistory.module.common.model.Vocation;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

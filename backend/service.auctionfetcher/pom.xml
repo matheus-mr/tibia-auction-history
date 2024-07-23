@@ -44,12 +44,17 @@
     </dependencies>
 
     <build>
+        <resources>
+            <resource>
+                <directory>${project.basedir}/../module.mongodb/src/main/resources</directory>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.tibiaauctionhistory.service.auctionfetch.TibiaAuctionFetchApplication</mainClass>
+                    <mainClass>com.tibiaauctionhistory.service.auctionfetch.TibiaAuctionFetchApplicationRunner</mainClass>
                     <layout>JAR</layout>
                 </configuration>
                 <executions>

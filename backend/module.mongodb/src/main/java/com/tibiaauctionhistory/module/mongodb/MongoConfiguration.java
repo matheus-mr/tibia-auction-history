@@ -1,4 +1,4 @@
-package com.matheusmr.tibiaauctionhistory.mongodb;
+package com.tibiaauctionhistory.module.mongodb;
 
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
@@ -13,8 +13,8 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @Configuration
 @EnableMongoRepositories(
         basePackages = {
-                "com.matheusmr.tibiaauctionhistory.common.repository",
-                "com.matheusmr.tibiaauctionhistory.auctionsearch.repository"
+                "com.tibiaauctionhistory.module.common.repository",
+                "com.tibiaauctionhistory.module.auctionsearch.repository"
         }
 )
 public class MongoConfiguration extends AbstractMongoClientConfiguration {

@@ -1,4 +1,4 @@
-package com.matheusmr.tibiaauctionhistory.auctionsearch.model;
+package com.tibiaauctionhistory.module.auctionsearch.model;
 
 import java.util.UUID;
 
