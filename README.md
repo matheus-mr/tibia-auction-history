@@ -228,7 +228,7 @@ But there is a problem, your mongodb is empty, it doesn't have auction data, the
         ```
         docker run --rm --network tibia_auction_history_network --name tibia-auction-history-domain -e SPRING_DATA_MONGODB_URI=mongodb://mongo/tibia-auction-history tibia-auction-history-domain
         ```
-    5. Then create the indexes using [https://www.mongodb.com/docs/mongodb-shell/](mongosh) by executing:
+    5. Then create the indexes using [mongosh](https://www.mongodb.com/docs/mongodb-shell/) by executing:
     
         ```
         mongosh tibia-auction-history
