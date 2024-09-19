@@ -1,13 +1,13 @@
 package com.tibiaauctionhistory.module.auctiondomain.service;
 
 import com.tibiaauctionhistory.module.auctiondomain.model.AuctionDomainDTO;
-import com.tibiaauctionhistory.module.common.model.Auction;
 import com.tibiaauctionhistory.module.common.model.Vocation;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.aggregation.*;
-import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
+import org.springframework.data.mongodb.core.aggregation.ArrayOperators;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -38,92 +38,171 @@ public class AuctionDomainServiceImpl implements AuctionDomainService {
 
     @Override
     public void createOrRefreshAuctionDomainView() {
-        final MatchOperation matchOperation = Aggregation.match(Criteria.where("inErrorState").is(false));
+        String aggregationPipeline =
+                """
+                    {
+                    aggregate: "auctions",
+                    pipeline : [
+                        {
+                          $match: {
+                            inErrorState: false
+                          }
+                        },
+                        {
+                            $facet: {
+                              worlds: [{ $group: { _id: "$world" } }, { $sort: { _id: 1 } }],
+                              charms: [
+                                { $unwind: "$charms" },
+                                { $group: { _id: "$charms" } },
+                                { $addFields: { lowerCaseName: { $toLower: "$_id" } } },
+                                { $sort: { lowerCaseName: 1 } }
+                              ],
+                              items: [
+                                { $unwind: "$items" },
+                                { $group: { _id: "$items.name" } },
+                                { $addFields: { lowerCaseName: { $toLower: "$_id" } } },
+                                { $sort: { lowerCaseName: 1 } }
+                              ],
+                              storeItems: [
+                                { $unwind: "$storeItems" },
+                                { $group: { _id: "$storeItems.name" } },
+                                { $addFields: { lowerCaseName: { $toLower: "$_id" } } },
+                                { $sort: { lowerCaseName: 1 } }
+                              ],
+                              mounts: [
+                                { $unwind: "$mounts" },
+                                { $group: { _id: "$mounts" } },
+                                { $addFields: { lowerCaseName: { $toLower: "$_id" } } },
+                                { $sort: { lowerCaseName: 1 } }
+                              ],
+                              storeMounts: [
+                                { $unwind: "$storeMounts" },
+                                { $group: { _id: "$storeMounts" } },
+                                { $addFields: { lowerCaseName: { $toLower: "$_id" } } },
+                                { $sort: { lowerCaseName: 1 } }
+                              ],
+                              outfits: [
+                                { $unwind: "$outfits" },
+                                { $group: { _id: "$outfits.name" } },
+                                { $addFields: { lowerCaseName: { $toLower: "$_id" } } },
+                                { $sort: { lowerCaseName: 1 } }
+                              ],
+                              storeOutfits: [
+                                { $unwind: "$storeOutfits" },
+                                { $group: { _id: "$storeOutfits.name" } },
+                                { $addFields: { lowerCaseName: { $toLower: "$_id" } } },
+                                { $sort: { lowerCaseName: 1 } }
+                              ],
+                              imbuements: [
+                                { $unwind: "$imbuements" },
+                                { $group: { _id: "$imbuements" } },
+                                { $addFields: { lowerCaseName: { $toLower: "$_id" } } },
+                                { $sort: { lowerCaseName: 1 } }
+                              ],
+                              completedQuestLines: [
+                                { $unwind: "$completedQuestLines" },
+                                { $group: { _id: "$completedQuestLines" } },
+                                { $addFields: { lowerCaseName: { $toLower: "$_id" } } },
+                                { $sort: { lowerCaseName: 1 } }
+                              ],
+                              titles: [
+                                { $unwind: "$titles" },
+                                { $group: { _id: "$titles" } },
+                                { $addFields: { lowerCaseName: { $toLower: "$_id" } } },
+                                { $sort: { lowerCaseName: 1 } }
+                              ],
+                              achievements: [
+                                { $unwind: "$achievements" },
+                                { $group: { _id: "$achievements" } },
+                                { $addFields: { lowerCaseName: { $toLower: "$_id" } } },
+                                { $sort: { lowerCaseName: 1 } }
+                              ],
+                            }
+                        },
+                        {
+                            $project: {
+                              _id: { $literal: "%s" },
+                              worlds: {
+                                $map: {
+                                  input: "$worlds",
+                                  in: "$$this._id"
+                                }
+                              },
+                              charms: {
+                                $map: {
+                                  input: "$charms",
+                                  in: "$$this._id"
+                                }
+                              },
+                              items: {
+                                $map: {
+                                  input: "$items",
+                                  in: "$$this._id"
+                                }
+                              },
+                              storeItems: {
+                                $map: {
+                                  input: "$storeItems",
+                                  in: "$$this._id"
+                                }
+                              },
+                              mounts: {
+                                $map: {
+                                  input: "$mounts",
+                                  in: "$$this._id"
+                                }
+                              },
+                              storeMounts: {
+                                $map: {
+                                  input: "$storeMounts",
+                                  in: "$$this._id"
+                                }
+                              },
+                              outfits: {
+                                $map: {
+                                  input: "$outfits",
+                                  in: "$$this._id"
+                                }
+                              },
+                              storeOutfits: {
+                                $map: {
+                                  input: "$storeOutfits",
+                                  in: "$$this._id"
+                                }
+                              },
+                              imbuements: {
+                                $map: {
+                                  input: "$imbuements",
+                                  in: "$$this._id"
+                                }
+                              },
+                              completedQuestLines: {
+                                $map: {
+                                  input: "$completedQuestLines",
+                                  in: "$$this._id"
+                                }
+                              },
+                              titles: {
+                                $map: {
+                                  input: "$titles",
+                                  in: "$$this._id"
+                                }
+                              },
+                              achievements: {
+                                $map: {
+                                  input: "$achievements",
+                                  in: "$$this._id"
+                                }
+                              },
+                            }
+                        },
+                        { $merge: { into: "%s", whenMatched: "replace" } }
+                    ],
+                    cursor: {},
+                    }
+                """.formatted(AUCTION_DOMAIN_ID, AUCTION_DOMAIN_VIEW);
 
-        final FacetOperation facetOperation = Aggregation.facet()
-                .and(Aggregation.group().addToSet("world").as("worlds")).as("worlds")
-                .and(unwindAndGroupStringArrayField("charms")).as("charms")
-                .and(unwindAndGroupStringArrayField("mounts")).as("mounts")
-                .and(unwindAndGroupStringArrayField("storeMounts")).as("storeMounts")
-                .and(unwindAndGroupStringArrayField("imbuements")).as("imbuements")
-                .and(unwindAndGroupStringArrayField("completedQuestLines")).as("completedQuestLines")
-                .and(unwindAndGroupStringArrayField("titles")).as("titles")
-                .and(unwindAndGroupStringArrayField("achivements")).as("achievements")
-                .and(unwindAndGroupNamedObjectArrayField("items")).as("items")
-                .and(unwindAndGroupNamedObjectArrayField("storeItems")).as("storeItems")
-                .and(unwindAndGroupNamedObjectArrayField("outfits")).as("outfits")
-                .and(unwindAndGroupNamedObjectArrayField("storeOutfits")).as("storeOutfits");
-
-        final ProjectionOperation projectionOperation = Aggregation.project()
-                .and(ConvertOperators.ToString.toString(AUCTION_DOMAIN_ID)).as("_id")
-                .and(projectField("worlds")).as("worlds")
-                .and(projectField("charms")).as("charms")
-                .and(projectField("mounts")).as("mounts")
-                .and(projectField("storeMounts")).as("storeMounts")
-                .and(projectField("imbuements")).as("imbuements")
-                .and(projectField("completedQuestLines")).as("completedQuestLines")
-                .and(projectField("titles")).as("titles")
-                .and(projectField("achievements")).as("achievements")
-                .and(projectField("items")).as("items")
-                .and(projectField("storeItems")).as("storeItems")
-                .and(projectField("outfits")).as("outfits")
-                .and(projectField("storeOutfits")).as("storeOutfits");
-
-        final OutOperation outOperation = Aggregation.out(AUCTION_DOMAIN_VIEW);
-
-        mongoTemplate.aggregate(
-                Aggregation.newAggregation(
-                        matchOperation,
-                        facetOperation,
-                        projectionOperation,
-                        outOperation
-                ),
-                Auction.class,
-                Object.class
-        );
-    }
-
-    private AggregationOperation[] unwindAndGroupStringArrayField(String fieldName) {
-        return new AggregationOperation[]{
-                Aggregation.unwind(fieldName),
-                Aggregation.group().addToSet(fieldName).as(fieldName),
-                context -> new Document("$set",
-                        new Document(fieldName,
-                                new Document("$sortArray",
-                                        new Document("input",
-                                                new Document("$map",
-                                                        new Document("input", "$" + fieldName)
-                                                                .append("in", new Document("$toLower", "$$this"))
-                                                )
-                                        )
-                                                .append("sortBy", 1)
-                                )
-                        )
-                )
-        };
-    }
-
-    private AggregationOperation[] unwindAndGroupNamedObjectArrayField(String fieldName) {
-        return new AggregationOperation[]{
-                Aggregation.unwind(fieldName),
-                Aggregation.group().addToSet("%s.name".formatted(fieldName)).as(fieldName),
-                context -> new Document("$set",
-                        new Document(fieldName,
-                                new Document("$sortArray",
-                                        new Document("input",
-                                                new Document("$map",
-                                                        new Document("input", "$" + fieldName)
-                                                                .append("in", new Document("$toLower", "$$this"))
-                                                )
-                                        )
-                                                .append("sortBy", 1)
-                                )
-                        )
-                )
-        };
-    }
-
-    private ArrayOperators.ArrayElemAt projectField(String fieldName){
-        return ArrayOperators.ArrayElemAt.arrayOf("%s.%s".formatted(fieldName, fieldName)).elementAt(0);
+        Document pipeline = Document.parse(aggregationPipeline);
+        mongoTemplate.executeCommand(pipeline);
     }
 }

@@ -16,6 +16,7 @@ import { TableContainer } from "@mui/material";
 import { visuallyHidden } from "@mui/utils";
 import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
 import FirstPageIcon from "@mui/icons-material/FirstPage";
+import { VOCATION_KEY_TO_LABEL } from "../../constants";
 import { useAppState } from "../AppStateContext";
 
 const columns = [
@@ -28,7 +29,7 @@ const columns = [
 ];
 
 function TablePaginationActions(props) {
-  const { page, onPageChange } = props;
+  const { page, onPageChange, nextIconButtonProps } = props;
 
   const handleFirstPageButtonClick = (event) => {
     onPageChange(event, 0);
@@ -59,6 +60,7 @@ function TablePaginationActions(props) {
         <KeyboardArrowLeft />
       </IconButton>
       <IconButton
+        {...nextIconButtonProps}
         onClick={handleNextButtonClick}
         aria-label="next page"
       >
@@ -147,7 +149,7 @@ function FilledTableBody({ auctions, handleRowClick }) {
     >
       <TableCell>{auction.name}</TableCell>
       <TableCell>{auction.level}</TableCell>
-      <TableCell>{auction.vocation}</TableCell>
+      <TableCell>{VOCATION_KEY_TO_LABEL[auction.vocation]}</TableCell>
       <TableCell>{auction.world}</TableCell>
       <TableCell>{auction.winningBid}</TableCell>
       <TableCell>{auction.auctionEnd}</TableCell>
@@ -162,6 +164,9 @@ export default function AuctionTable({
 }) {
   const { state, dispatch, setSimpleFieldValue } = useAppState();
   const { currentPage, rowsPerPage, sortBy, orderBy } = state;
+
+  const hasMore =
+    auctions && auctions.length && auctions.length === rowsPerPage;
 
   const onClickSort = (columnId) => (event) => {
     const isAsc = orderBy === "ASC";
@@ -207,6 +212,7 @@ export default function AuctionTable({
         count={-1}
         rowsPerPage={parseInt(rowsPerPage)}
         page={currentPage}
+        nextIconButtonProps={{ disabled: !hasMore || isLoadingAuctions }}
         onPageChange={(event, page) => setSimpleFieldValue("currentPage", page)}
         onRowsPerPageChange={(event) =>
           dispatch({

@@ -13,18 +13,6 @@ public class RedisConfiguration {
 
     @Bean
     public RedisTemplate<String, ?> redisTemplate (RedisConnectionFactory cf) {
-//        new Jackson2ObjectMapperBuilder().failOnEmptyBeans(false)
-//                .failOnUnknownProperties(false)
-//                .indentOutput(false)
-//                .serializationInclusion(JsonInclude.Include.NON_NULL)
-//                .modules(new JavaTimeModule())
-//                .featuresToDisable(
-//                        SerializationFeature.WRITE_DATES_AS_TIMESTAMPS,
-//                        DeserializationFeature.READ_DATE_TIMESTAMPS_AS_NANOSECONDS,
-//                        SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS
-//                )
-//                .enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY)
-//                .build();
         final ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.activateDefaultTyping(objectMapper.getPolymorphicTypeValidator(), ObjectMapper.DefaultTyping.NON_FINAL);
         objectMapper.registerModule(new JavaTimeModule());

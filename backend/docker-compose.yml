@@ -13,6 +13,8 @@ services:
         limits:
           memory: '8gb'
           cpus: '2'
+    networks:
+      - tibia_auction_history_network
 
   redis:
     image: redis:7.2.5
@@ -26,3 +28,9 @@ services:
       resources:
         limits:
           memory: '1.5gb'
+    networks:
+      - tibia_auction_history_network
+
+networks:
+  tibia_auction_history_network:
+    name: tibia_auction_history_network

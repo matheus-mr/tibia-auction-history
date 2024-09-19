@@ -23,10 +23,9 @@
 		<module>module.mongodb</module>
         <module>module.utils</module>
         <module>module.auctiondomain</module>
-		<module>module.auctionsearch</module>
-		<module>service.auctionfetcher</module>
-		<module>service.auctiondomainupdater</module>
-		<module>service.web</module>
+		<module>service.auctionsearch</module>
+		<module>service.auctionfetch</module>
+		<module>service.auctiondomain</module>
 	</modules>
 
 	<properties>
@@ -79,6 +78,12 @@
 			<version>${org.mapstruct.version}</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.aventrix.jnanoid</groupId>
+			<artifactId>jnanoid</artifactId>
+			<version>2.0.0</version>
+		</dependency>
+
 		<!-- Test dependencies -->
 
 		<dependency>
@@ -96,7 +101,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-testcontainers</artifactId>
-			<version>3.2.3</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

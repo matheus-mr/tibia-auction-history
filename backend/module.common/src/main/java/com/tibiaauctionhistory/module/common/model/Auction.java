@@ -3,20 +3,43 @@ package com.tibiaauctionhistory.module.common.model;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
+import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Document(collection = "auctions")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
 @Getter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @AllArgsConstructor
+@Document(collection = Auction.AUCTIONS_COLLECTION_NAME)
 public class Auction {
+
+    public static final String AUCTIONS_COLLECTION_NAME = "auctions";
+    public static final String NON_ARRAY_FIELDS_INDEX_NAME = "non_array_fields_index";
+    public static final List<String> ALL_ARRAY_FIELDS = List.of(
+            "items",
+            "storeItems",
+            "mounts",
+            "storeMounts",
+            "imbuements",
+            "completedQuestLines",
+            "titles",
+            "achievements",
+            "outfits",
+            "storeOutfits"
+    );
+    public static final List<String> NOT_INDEXED_FIELDS = List.of(
+            "items",
+            "storeItems",
+            "outfits",
+            "storeOutfits"
+    );
 
     @Id
     @EqualsAndHashCode.Include

@@ -39,7 +39,10 @@ const AppWithSearch = () => {
 
   const { isLoading: isLoadingAuctionSearch } = useSWRImmutable(
     shouldFetchFilters
-      ? [`http://localhost:8080/api/v1/auctions/search/${searchId}`, searchId]
+      ? [
+          `${process.env.REACT_APP_API_URL}/api/v1/auctions/search/${searchId}`,
+          searchId,
+        ]
       : null,
     async ([url]) => {
       const result = await axios.get(url);

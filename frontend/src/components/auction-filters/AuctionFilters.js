@@ -12,12 +12,21 @@ import ImbuementsAndQuestsFilter from "./ImbuementsAndQuestsFilter";
 import TitlesAndAchievementsFilter from "./TitlesAndAchievementsFilter";
 import MainInfoFilter from "./MainInfoFilter";
 import SearchButton from "./SearchButton";
+import ResetFiltersButton from "./ResetFiltersButton";
 import { useAppState } from "../AppStateContext";
 
-export default function AuctionFilters({ onClickSearch }) {
+export default function AuctionFilters({
+  onClickSearchButton,
+  onClickResetFiltersButton,
+}) {
   const { getFilterValue, setSimpleFieldValue } = useAppState();
   return (
-    <Accordion expanded={getFilterValue("expanded")} onChange={(event, expanded) => setSimpleFieldValue("expanded", expanded)}>
+    <Accordion
+      expanded={getFilterValue("expanded")}
+      onChange={(event, expanded) =>
+        setSimpleFieldValue("filters.expanded", expanded)
+      }
+    >
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         <Typography>Filters</Typography>
       </AccordionSummary>
@@ -44,8 +53,13 @@ export default function AuctionFilters({ onClickSearch }) {
           <Grid container item>
             <OutfitsFilter />
           </Grid>
-          <Grid container item>
-            <SearchButton onClick={onClickSearch} />
+          <Grid container item direction="row" spacing={1}>
+            <Grid item xs>
+              <SearchButton onClick={onClickSearchButton} />
+            </Grid>
+            <Grid item xs>
+              <ResetFiltersButton onClick={onClickResetFiltersButton} />
+            </Grid>
           </Grid>
         </Grid>
       </AccordionDetails>

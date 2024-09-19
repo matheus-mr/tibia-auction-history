@@ -13,16 +13,21 @@ import { getDefaultFilters } from "../filters/default-filters";
 
 const AppStateContext = createContext();
 
-const initialState = {
+const initialFilters = {
   rowsPerPage: 10,
   currentPage: 0,
   sortBy: "auctionEnd",
   orderBy: "DESC",
   filters: getDefaultFilters(),
+  searchId: null,
 };
 
 export function AppStateProvider({ children }) {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(reducer, initialFilters);
+
+  const resetFilters = useCallback(() => {
+    dispatch({ type: "reset_filters" });
+  }, []);
 
   const setSimpleFieldValue = useCallback((fieldName, fieldValue) => {
     dispatch({ type: "set_simple_field_value", fieldName, fieldValue });
@@ -88,6 +93,7 @@ export function AppStateProvider({ children }) {
     () => ({
       state,
       dispatch,
+      resetFilters,
       setSimpleFieldValue,
       setSimpleFilterValueFromEvent,
       setSimpleFilterValueFromAutoCompleteEvent,
@@ -100,6 +106,7 @@ export function AppStateProvider({ children }) {
     }),
     [
       state,
+      resetFilters,
       setSimpleFieldValue,
       setSimpleFilterValueFromEvent,
       setSimpleFilterValueFromAutoCompleteEvent,
@@ -185,6 +192,9 @@ function reducer(state, action) {
         };
       });
       return setNestedPropertyValue(state, filterPath, newSelectedOutfits);
+    }
+    case "reset_filters": {
+      return { ...state, ...initialFilters };
     }
     default:
       throw Error("Unknown action type: " + action.type);

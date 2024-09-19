@@ -11,7 +11,7 @@ import { useAppState } from "./AppStateContext";
 import "./App.css";
 
 function App() {
-  const { state, setSimpleFieldValue } = useAppState();
+  const { state, setSimpleFieldValue, resetFilters } = useAppState();
 
   const navigate = useNavigate();
 
@@ -20,30 +20,19 @@ function App() {
     isLoading: isLoadingAuctions,
     error: isErrorAuctions,
   } = useSWRImmutable(
-    [
-      "http://localhost:8080" +
-        getAuctionResultsPath(
-          state.searchId,
-          state.rowsPerPage,
-          state.currentPage,
-          state.sortBy,
-          state.orderBy
-        ),
+    getAuctionKey(
       state.searchId,
       state.rowsPerPage,
       state.currentPage,
       state.sortBy,
-      state.orderBy,
-    ],
-    async ([url]) => {
-      const result = await axios.get(url);
-      return result.data;
-    },
+      state.orderBy
+    ),
+    auctionFetcher,
     { revalidateOnFocus: false }
   );
 
   const { error: isErrorDomain, isLoading: isLoadingDomain } = useSWRImmutable(
-    [`http://localhost:8080/api/v1/auctions/domain`],
+    [`${process.env.REACT_APP_API_URL}/api/v1/auctions/domain`],
     async ([url]) => {
       const result = await axios.get(url);
       const resultData = {
@@ -59,10 +48,10 @@ function App() {
     { revalidateOnFocus: false }
   );
 
-  const onClickSearch = useCallback(() => {
+  const onClickSearchButton = useCallback(() => {
     const createAuctionSearch = async () => {
       const result = await axios.post(
-        "http://localhost:8080/api/v1/auctions/search",
+        `${process.env.REACT_APP_API_URL}/api/v1/auctions/search`,
         buildAuctionSearch(state.filters)
       );
       setSimpleFieldValue("searchId", result.data);
@@ -70,6 +59,10 @@ function App() {
 
     createAuctionSearch();
   }, [setSimpleFieldValue, state.filters]);
+
+  const onClickResetFiltersButton = useCallback(() => {
+    resetFilters();
+  }, [resetFilters]);
 
   useEffect(
     () =>
@@ -100,7 +93,10 @@ function App() {
 
   return (
     <>
-      <AuctionFilters onClickSearch={onClickSearch} />
+      <AuctionFilters
+        onClickSearchButton={onClickSearchButton}
+        onClickResetFiltersButton={onClickResetFiltersButton}
+      />
       <AuctionTable
         auctions={auctions}
         isLoadingAuctions={isLoadingAuctions}
@@ -109,6 +105,21 @@ function App() {
     </>
   );
 }
+
+const auctionFetcher = async ([url]) => {
+  const result = await axios.get(url);
+  return result.data;
+};
+
+const getAuctionKey = (searchId, rowsPerPage, page, sortBy, orderBy) => [
+  process.env.REACT_APP_API_URL +
+    getAuctionResultsPath(searchId, rowsPerPage, page, sortBy, orderBy),
+  searchId,
+  rowsPerPage,
+  page,
+  sortBy,
+  orderBy,
+];
 
 const getAuctionResultsPath = (
   searchId,

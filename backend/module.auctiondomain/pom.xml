@@ -12,7 +12,6 @@
 
     <groupId>com.tibiaauctionhistory.module.auctiondomain</groupId>
     <artifactId>module.auctiondomain</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
     <name>Auction domain module</name>
     <description>
         Module to handle the domain of auctions.
